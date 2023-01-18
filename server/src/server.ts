@@ -1,9 +1,12 @@
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 
 const app = Fastify();
 
-app.get('/', () => {
-  return "Hello World"
+app.register(cors);
+
+app.get('/', async () => {
+  return "Hello World";
 });
 
 app.listen({
