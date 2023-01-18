@@ -1,9 +1,9 @@
-import { generateDatesFromYearBeginning } from '../utils/generate-dates-from-year-beginning';
+import { generateDatesFromYearStart } from '../utils/generate-dates-from-year-start';
 import { HabitDay } from './HabitDay';
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
-const summaryDates = generateDatesFromYearBeginning();
+const summaryDates = generateDatesFromYearStart();
 
 const minSummaryDatesSize = 18 * 7; // 18 weeks
 const amountOfDaysToFill = minSummaryDatesSize - summaryDates.length;
