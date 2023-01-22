@@ -1,5 +1,10 @@
-import { generateDatesFromYearStart } from '../utils/generate-dates-from-year-start';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+
 import { HabitDay } from './HabitDay';
+import { generateDatesFromYearStart } from '../utils/generate-dates-from-year-start';
+
+import { api } from '../lib/api';
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -8,7 +13,22 @@ const summaryDates = generateDatesFromYearStart();
 const minSummaryDatesSize = 18 * 7; // 18 weeks
 const amountOfDaysToFill = minSummaryDatesSize - summaryDates.length;
 
+type Summary = Array<{
+  id: string;
+  date: string;
+  amount: number;
+  completed: number;
+}>
+
 export function SummaryTable() {
+  const [summary, setSummary] = useState<Summary>([]);
+
+  useEffect(() => {
+    api.get('summary').then(res => {
+      setSummary(res.data);
+    });
+  })
+
   return (
     <div className="w-full flex">
       <div className="grid grid-rows-7 grid-flow-row gap-3">
@@ -24,11 +44,16 @@ export function SummaryTable() {
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {
           summaryDates.map(date => {
+            const datyInSummary = summary.find(day => {
+              return dayjs(date).isSame(day.date, 'day');
+            });
+
             return (
               <HabitDay
                 key={date.toISOString()}
-                amount={5}
-                completed={Math.floor(Math.random() * 5)}
+                date={date}
+                amount={datyInSummary?.amount}
+                completed={datyInSummary?.completed}
               />
             )
           })
