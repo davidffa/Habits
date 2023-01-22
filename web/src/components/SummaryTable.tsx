@@ -27,7 +27,7 @@ export function SummaryTable() {
     api.get('summary').then(res => {
       setSummary(res.data);
     });
-  })
+  }, [])
 
   return (
     <div className="w-full flex">
